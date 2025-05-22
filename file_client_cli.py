@@ -64,7 +64,31 @@ def remote_get(filename=""):
         return False
 
 
+def remote_upload(filepath=""):
+    try:
+        with open(filepath, 'rb') as f:
+            data = base64.b64encode(f.read()).decode()
+        filename = filepath.split("/")[-1]
+        command_str = f"UPLOAD {filename} {data}"
+        hasil = send_command(command_str)
+        print(hasil['data'])
+        return hasil['status'] == 'OK'
+    except Exception as e:
+        print("Upload gagal:", e)
+        return False
+
+def remote_delete(filename=""):
+    command_str = f"DELETE {filename}"
+    hasil = send_command(command_str)
+    print(hasil['data'])
+    return hasil['status'] == 'OK'
+
+
 if __name__=='__main__':
     server_address=('172.16.16.101',6666)
     remote_list()
-    remote_get('donalbebek.jpg')
+    remote_upload('test.txt')
+    remote_list()
+    remote_get('pokijan.jpg')
+    remote_delete('test.txt')
+
