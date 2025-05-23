@@ -27,23 +27,27 @@ class FileInterface:
             return dict(status='ERROR',data=str(e))
 
     def upload(self, params=[]):
-    	try:
+        try:
             filename = params[0]
-            filedata_base64 = params[1]
-            with open(filename, 'wb') as f:
-            	f.write(base64.b64decode(filedata_base64.encode()))
+            filecontent = params[1]
+            # Ensure correct padding
+            missing_padding = len(filecontent) % 4
+            if missing_padding != 0:
+                filecontent += '=' * (4 - missing_padding)
+            filecontent = base64.b64decode(filecontent)
+            with open(filename, 'wb') as fp:
+                fp.write(filecontent)
             return dict(status='OK', data=f"{filename} uploaded successfully")
-    	except Exception as e:
+        except Exception as e:
             return dict(status='ERROR', data=str(e))
 
     def delete(self, params=[]):
-    	try:
+        try:
             filename = params[0]
             os.remove(filename)
             return dict(status='OK', data=f"{filename} deleted successfully")
-    	except Exception as e:
+        except Exception as e:
             return dict(status='ERROR', data=str(e))
-
 
 if __name__=='__main__':
     f = FileInterface()

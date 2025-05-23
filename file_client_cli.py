@@ -37,7 +37,7 @@ def send_command(command_str=""):
 
 
 def remote_list():
-    command_str=f"LIST"
+    command_str=f"LIST\r\n\r\n"
     hasil = send_command(command_str)
     if (hasil['status']=='OK'):
         print("daftar file : ")
@@ -49,7 +49,7 @@ def remote_list():
         return False
 
 def remote_get(filename=""):
-    command_str=f"GET {filename}"
+    command_str=f"GET {filename}\r\n\r\n"
     hasil = send_command(command_str)
     if (hasil['status']=='OK'):
         #proses file dalam bentuk base64 ke bentuk bytes
@@ -68,7 +68,7 @@ def remote_upload(filename=""):
     data = base64.b64encode(f.read()).decode()
     f.close()
 
-    command_str = f"UPLOAD {filename} {data}"
+    command_str = f"UPLOAD {filename} {data}\r\n\r\n"
     hasil = send_command(command_str)
 
     if hasil['status'] == 'OK':
@@ -80,7 +80,7 @@ def remote_upload(filename=""):
         return False
 
 def remote_delete(filename=""):
-    command_str = f"DELETE {filename}"
+    command_str = f"DELETE {filename}\r\n\r\n"
     hasil = send_command(command_str)
     if hasil['status'] == 'OK':
         print(hasil['data'])
@@ -94,8 +94,7 @@ def remote_delete(filename=""):
 if __name__=='__main__':
     server_address=('172.16.16.101',6666)
     remote_list()
-    remote_upload('test.txt')
+    remote_delete('pokijan.jpg')
     remote_list()
-    remote_get('pokijan.jpg')
-    remote_delete('test.txt')
-
+    remote_upload('pokijan.jpg')
+    remote_list()
