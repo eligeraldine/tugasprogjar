@@ -63,25 +63,32 @@ def remote_get(filename=""):
         print("Gagal")
         return False
 
+def remote_upload(filename=""):
+    f = open(filename, 'rb')
+    data = base64.b64encode(f.read()).decode()
+    f.close()
 
-def remote_upload(filepath=""):
-    try:
-        with open(filepath, 'rb') as f:
-            data = base64.b64encode(f.read()).decode()
-        filename = filepath.split("/")[-1]
-        command_str = f"UPLOAD {filename} {data}"
-        hasil = send_command(command_str)
+    command_str = f"UPLOAD {filename} {data}"
+    hasil = send_command(command_str)
+
+    if hasil['status'] == 'OK':
         print(hasil['data'])
-        return hasil['status'] == 'OK'
-    except Exception as e:
-        print("Upload gagal:", e)
+        print(f"File {filename} berhasil diupload ke server")
+        return True
+    else:
+        print("Gagal mengupload file,", hasil['data'])
         return False
 
 def remote_delete(filename=""):
     command_str = f"DELETE {filename}"
     hasil = send_command(command_str)
-    print(hasil['data'])
-    return hasil['status'] == 'OK'
+    if hasil['status'] == 'OK':
+        print(hasil['data'])
+        print(f"File {filename} berhasil didelete dari server")
+        return True
+    else:
+        print("Gagal menghapus file,", hasil['data'])
+        return False
 
 
 if __name__=='__main__':

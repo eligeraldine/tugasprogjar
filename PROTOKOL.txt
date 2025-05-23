@@ -47,7 +47,7 @@ UPLOAD
 * RESULT:
 - BERHASIL:
   - status: OK
-  - data: File berhasil diupload
+  - data: pesan konfirmasi, misalnya "namafile.txt uploaded successfully"
 - GAGAL:
   - status: ERROR
   - data: pesan kesalahan
@@ -59,7 +59,7 @@ DELETE
 * RESULT:
 - BERHASIL:
   - status: OK
-  - data: File berhasil dihapus
+  - data: pesan konfirmasi, misalnya "namafile.txt deleted successfully"
 - GAGAL:
   - status: ERROR
   - data: pesan kesalahan
