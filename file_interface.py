@@ -28,7 +28,8 @@ class FileInterface:
 
     def upload(self, params=[]):
         try:
-            filename = params[0]
+            full_path = params[0]
+            filename = os.path.basename(full_path)
             filecontent = params[1]
             # Ensure correct padding
             missing_padding = len(filecontent) % 4

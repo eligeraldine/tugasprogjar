@@ -29,16 +29,17 @@ class FileProtocol:
         parts = string_datamasuk.split(' ', 1)
         c_request = parts[0].strip().lower()
 
-        if c_request != 'upload':
-            c = shlex.split(string_datamasuk.lower())
-            c_request = c[0].strip()
-            params = [x for x in c[1:]]
-        else: # upload protocol
+        if c_request == 'upload':
             parts = string_datamasuk.split(' ', 2)
             c_request = parts[0].strip().lower()
             filename = parts[1].strip()
             content = parts[2].strip()
             params = [filename, content]
+        else:
+            c = shlex.split(string_datamasuk.lower())
+            c_request = c[0].strip()
+            params = [x for x in c[1:]]
+
         try:
             logging.warning(f"memproses request: {c_request}")
             cl = getattr(self.file,c_request)(params)
